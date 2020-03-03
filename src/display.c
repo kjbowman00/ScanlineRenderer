@@ -1,11 +1,13 @@
-#include<stdio.h>
-#include<GL/glut.h>
-#include"structs.h"
+#include <stdio.h>
+#include <GL/glut.h>
+#include "structs.h"
 
-#define WIDTH 1560
-#define HEIGHT 840
+#define WIDTH 500
+#define HEIGHT 500
 
 int* pixels;
+
+void generateImage(int* pixels, int width, int height);
   
 // function to initialize 
 void myInit (void) 
@@ -24,12 +26,21 @@ void display (void)
     glBegin(GL_POINTS); 
     int x, y;
     
-    for (y = 0; y < WIDTH; y++) {
-		for (x = 0; x < HEIGHT; x++) {
-			
+    glColor3f(1,0,0);
+    for (y = 0; y < HEIGHT; y++) {
+		for (x = 0; x < WIDTH; x++) {
+			if (pixels[x + WIDTH*y] == 1) {
+				glVertex2i(x,y);
+			}
 		}
 	}
     
+    
+    //Draw 3 test points
+    glColor3f(0,1,0);
+    glVertex2i(50,50);
+    glVertex2i(200,200);
+    glVertex2i(150,250);
     
     
     glEnd(); 
@@ -52,7 +63,7 @@ int main (int argc, char** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); 
       
     // giving window size in X- and Y- direction 
-    glutInitWindowSize(1366, 768); 
+    glutInitWindowSize(WIDTH, HEIGHT); 
     glutInitWindowPosition(0, 0); 
       
     // Giving name to window 
