@@ -30,7 +30,7 @@ void display (void)
     for (y = 0; y < HEIGHT; y++) {
 		for (x = 0; x < WIDTH; x++) {
 			if (pixels[x + WIDTH*y] == 1) {
-				glVertex2i(x,y);
+				glVertex2i(x-WIDTH/2,y-HEIGHT/2);
 			}
 		}
 	}
@@ -38,9 +38,12 @@ void display (void)
     
     //Draw 3 test points
     glColor3f(0,1,0);
-    glVertex2i(50,50);
-    glVertex2i(200,200);
+    glVertex2i(10,10);
+    glVertex2i(-50,-50);
     glVertex2i(150,250);
+    
+    glColor3f(0,0,1);
+    glVertex2i(0,0);
     
     
     glEnd(); 

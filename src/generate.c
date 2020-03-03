@@ -33,7 +33,7 @@ bool lineIntersectsTriangle(int y, Triangle tri) {
  */
 void generateImage(int* pixels, int w, int h) {
 	
-	Triangle triangle = triangle_c(50,50, 200,200, 150, 250);
+	Triangle triangle = triangle_c(10+w/2,10+h/2, -50+w/2,-50+h/2, 150+w/2, 250+h/2);
 	
 	for (int y = 0; y < h; y++) {
 		//loop through all triangles
