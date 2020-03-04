@@ -52,17 +52,17 @@ void generateImage(int* pixels, int w, int h) {
 			float xIntercepts[3];
 			if (numBetween(y, triangle.points[0].y, triangle.points[1].y)) {
 				float slope = calcSlope(triangle, 0, 1);
-				xIntercepts[0] = (y-triangle.points[0].y)/slope + triangle.points[0].x;
+				xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
 				numIntersections++;
 			}
 			if (numBetween(y, triangle.points[1].y, triangle.points[2].y)) {
 				float slope = calcSlope(triangle, 1, 2);
-				xIntercepts[1] = (y-triangle.points[1].y)/slope + triangle.points[1].x;
+				xIntercepts[numIntersections] = ((float)(y-triangle.points[1].y))/slope + ((float)triangle.points[1].x);
 				numIntersections++;
 			}
 			if (numBetween(y, triangle.points[0].y, triangle.points[2].y)) {
 				float slope = calcSlope(triangle, 0, 2);
-				xIntercepts[2] = (y-triangle.points[0].y)/slope + triangle.points[0].x;
+				xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
 				numIntersections++;
 			}
 			
@@ -70,13 +70,17 @@ void generateImage(int* pixels, int w, int h) {
 				//Fill inbetween the two points
 				if (xIntercepts[0] < xIntercepts[1]) {
 					int x;
-					for (x= (int) xIntercepts[0]; x < xIntercepts[1]; x++) {
+					int low = (int) xIntercepts[0];
+					int high = (int) xIntercepts[1];
+					for (x= low; x <= high; x++) {
 						pixels[x + y*w] = 1;
 					}
 				}
 				else {
 					int x;
-					for (x=(int) xIntercepts[1]; x < xIntercepts[0]; x++) {
+					int low = (int) xIntercepts[1];
+					int high = (int) xIntercepts[0];
+					for (x=low; x < high; x++) {
 						pixels[x + y*w] = 1;
 					}
 				}
