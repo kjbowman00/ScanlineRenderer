@@ -1,6 +1,6 @@
 IDIR =../include
 CC=gcc
-CFLAGS=-I$(IDIR) $(OPTIM) -lGL -lGLU -lglut -Wall
+CFLAGS=-I$(IDIR) $(OPTIM) -lGL -lGLU -lglut -Wall -g
 
 ODIR=obj
 LDIR =../lib

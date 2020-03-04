@@ -4,6 +4,11 @@
 
 #include "structs.h"
 
+float calcSlope(Triangle tri, int i1, int i2) {
+	return ((float)(tri.points[i1].y - tri.points[i2].y)) / 
+	((float) (tri.points[i1].x - tri.points[i2].x));
+}
+
 /**
  * Checks if a number is between two numbers.
  * Order of bounds is not important
@@ -29,19 +34,58 @@ bool lineIntersectsTriangle(int y, Triangle tri) {
 
 /**
  * Fills a pixel array based on triangles position
- * 
  */
 void generateImage(int* pixels, int w, int h) {
 	
-	Triangle triangle = triangle_c(10+w/2,10+h/2, -50+w/2,-50+h/2, 150+w/2, 250+h/2);
+	Triangle triangle = triangle_c(10+w/2,10+h/2, -50+w/2,-50+h/2, 50+w/2, -80+h/2);
+	
+	printf("W: %d, H: %d\n", w, h);
+	
+	printf("Triangle: %d,%d\n%d,%d\n%d,%d\n",triangle.points[0].x,triangle.points[0].y,triangle.points[1].x,triangle.points[1].y,triangle.points[2].x,triangle.points[2].y);
 	
 	for (int y = 0; y < h; y++) {
 		//loop through all triangles
 		//TODO: Add array of triangles
 		if (lineIntersectsTriangle(y, triangle)) {
-			for (int i = 0; i < w; i++) {
-				pixels[i + y*w] = 1;
+			//Determine intersection points:
+			int numIntersections = 0;
+			float xIntercepts[3];
+			if (numBetween(y, triangle.points[0].y, triangle.points[1].y)) {
+				float slope = calcSlope(triangle, 0, 1);
+				xIntercepts[0] = (y-triangle.points[0].y)/slope + triangle.points[0].x;
+				numIntersections++;
 			}
+			if (numBetween(y, triangle.points[1].y, triangle.points[2].y)) {
+				float slope = calcSlope(triangle, 1, 2);
+				xIntercepts[1] = (y-triangle.points[1].y)/slope + triangle.points[1].x;
+				numIntersections++;
+			}
+			if (numBetween(y, triangle.points[0].y, triangle.points[2].y)) {
+				float slope = calcSlope(triangle, 0, 2);
+				xIntercepts[2] = (y-triangle.points[0].y)/slope + triangle.points[0].x;
+				numIntersections++;
+			}
+			
+			if(numIntersections == 2) {
+				//Fill inbetween the two points
+				if (xIntercepts[0] < xIntercepts[1]) {
+					int x;
+					for (x= (int) xIntercepts[0]; x < xIntercepts[1]; x++) {
+						pixels[x + y*w] = 1;
+					}
+				}
+				else {
+					int x;
+					for (x=(int) xIntercepts[1]; x < xIntercepts[0]; x++) {
+						pixels[x + y*w] = 1;
+					}
+				}
+				
+			}
+			
+			/*for (int i = 0; i < w; i++) {
+				pixels[i + y*w] = 1;
+			}*/
 		}
 	}
 }

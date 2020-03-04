@@ -40,7 +40,7 @@ void display (void)
     glColor3f(0,1,0);
     glVertex2i(10,10);
     glVertex2i(-50,-50);
-    glVertex2i(150,250);
+    glVertex2i(50,-80);
     
     glColor3f(0,0,1);
     glVertex2i(0,0);
