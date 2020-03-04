@@ -39,63 +39,61 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 	
 	//Color c = color_c(255, 0, 0, 255);
 	//Triangle triangle = triangle_c(-300+w/2,300+h/2, 300+w/2,300+h/2, 70+w/2, -100+h/2, c);
-	Triangle triangle = triangles[0];
+	//Triangle triangle = triangles[0];
 	
 	printf("W: %d, H: %d\n", w, h);
 	
-	printf("Triangle: %d,%d\n%d,%d\n%d,%d\n",triangle.points[0].x,triangle.points[0].y,triangle.points[1].x,triangle.points[1].y,triangle.points[2].x,triangle.points[2].y);
+	//printf("Triangle: %d,%d\n%d,%d\n%d,%d\n",triangle.points[0].x,triangle.points[0].y,triangle.points[1].x,triangle.points[1].y,triangle.points[2].x,triangle.points[2].y);
 	
 	for (int y = 0; y < h; y++) {
 		//loop through all triangles
 		//TODO: Add array of triangles
-		if (lineIntersectsTriangle(y, triangle)) {
-			//Determine intersection points:
-			int numIntersections = 0;
-			float xIntercepts[3];
-			if (numBetween(y, triangle.points[0].y, triangle.points[1].y)) {
-				float slope = calcSlope(triangle, 0, 1);
-				xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
-				numIntersections++;
-			}
-			if (numBetween(y, triangle.points[1].y, triangle.points[2].y)) {
-				float slope = calcSlope(triangle, 1, 2);
-				xIntercepts[numIntersections] = ((float)(y-triangle.points[1].y))/slope + ((float)triangle.points[1].x);
-				numIntersections++;
-			}
-			if (numBetween(y, triangle.points[0].y, triangle.points[2].y)) {
-				float slope = calcSlope(triangle, 0, 2);
-				xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
-				numIntersections++;
-			}
-			
-			if(numIntersections == 2) {
-				//Fill inbetween the two points
-				if (xIntercepts[0] < xIntercepts[1]) {
-					int x;
-					int low = (int) xIntercepts[0];
-					int high = (int) xIntercepts[1];
-					for (x= low; x <= high; x++) {
-						if ( x >= 0 && x < w) {
-							pixels[x + y*w] = triangle.color;
-						}
-					}
+		for (int triN = 0; triN < N; triN++) {
+			Triangle triangle = triangles[triN];
+			if (lineIntersectsTriangle(y, triangle)) {
+				//Determine intersection points:
+				int numIntersections = 0;
+				float xIntercepts[3];
+				if (numBetween(y, triangle.points[0].y, triangle.points[1].y)) {
+					float slope = calcSlope(triangle, 0, 1);
+					xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
+					numIntersections++;
 				}
-				else {
-					int x;
-					int low = (int) xIntercepts[1];
-					int high = (int) xIntercepts[0];
-					for (x=low; x < high; x++) {
-						if ( x >= 0 && x < w) {
-							pixels[x + y*w] = triangle.color;
-						}
-					}
+				if (numBetween(y, triangle.points[1].y, triangle.points[2].y)) {
+					float slope = calcSlope(triangle, 1, 2);
+					xIntercepts[numIntersections] = ((float)(y-triangle.points[1].y))/slope + ((float)triangle.points[1].x);
+					numIntersections++;
+				}
+				if (numBetween(y, triangle.points[0].y, triangle.points[2].y)) {
+					float slope = calcSlope(triangle, 0, 2);
+					xIntercepts[numIntersections] = ((float)(y-triangle.points[0].y))/slope + ((float)triangle.points[0].x);
+					numIntersections++;
 				}
 				
+				if(numIntersections == 2) {
+					//Fill inbetween the two points
+					if (xIntercepts[0] < xIntercepts[1]) {
+						int x;
+						int low = (int) xIntercepts[0];
+						int high = (int) xIntercepts[1];
+						for (x= low; x <= high; x++) {
+							if ( x >= 0 && x < w) {
+								pixels[x + y*w] = triangle.color;
+							}
+						}
+					}
+					else {
+						int x;
+						int low = (int) xIntercepts[1];
+						int high = (int) xIntercepts[0];
+						for (x=low; x < high; x++) {
+							if ( x >= 0 && x < w) {
+								pixels[x + y*w] = triangle.color;
+							}
+						}
+					}	
+				}
 			}
-			
-			/*for (int i = 0; i < w; i++) {
-				pixels[i + y*w] = 1;
-			}*/
 		}
 	}
 }
