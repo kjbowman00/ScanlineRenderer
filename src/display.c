@@ -7,7 +7,8 @@
 
 Color* pixels;
 
-void generateImage(Color* pixels, int width, int height);
+void generateImage(Color* pixels, int width, int height, int N, Triangle* triangles);
+Triangle* getTriangles(char* fileName, int* N, int w, int h);
   
 // function to initialize 
 void myInit (void) 
@@ -54,13 +55,18 @@ void display (void)
   
 int main (int argc, char** argv) 
 { 
+	//Get Triangles from file
+	int N = 0;
+	Triangle* triangles = getTriangles("triangles.txt", &N, WIDTH, HEIGHT);
+	printf("%d %d %d %d\n",triangles[0].color.r,triangles[0].color.g,triangles[0].color.b,triangles[0].color.a);
+	
 	//GENERATE IMAGE
 	pixels = (Color*) calloc(WIDTH*HEIGHT, sizeof(Color));
 	if (pixels == NULL) {
 		printf("pixels array not allocated\n");
 		return 0;
 	}
-	generateImage(pixels, WIDTH, HEIGHT);
+	generateImage(pixels, WIDTH, HEIGHT, N, triangles);
 	
 	//PERFORM DISPLAY STUFF
 	

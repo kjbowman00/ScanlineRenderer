@@ -10,7 +10,7 @@ LIBS=-lm
 _DEPS = structs.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = generate.o display.o triangle.o
+_OBJ = generate.o display.o triangle.o readFromFile.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 

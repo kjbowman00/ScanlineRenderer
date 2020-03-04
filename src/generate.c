@@ -35,10 +35,11 @@ bool lineIntersectsTriangle(int y, Triangle tri) {
 /**
  * Fills a pixel array based on triangles position
  */
-void generateImage(Color* pixels, int w, int h) {
+void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 	
-	Color c = color_c(255, 0, 0, 255);
-	Triangle triangle = triangle_c(-300+w/2,300+h/2, 300+w/2,300+h/2, 70+w/2, -100+h/2, c);
+	//Color c = color_c(255, 0, 0, 255);
+	//Triangle triangle = triangle_c(-300+w/2,300+h/2, 300+w/2,300+h/2, 70+w/2, -100+h/2, c);
+	Triangle triangle = triangles[0];
 	
 	printf("W: %d, H: %d\n", w, h);
 	
