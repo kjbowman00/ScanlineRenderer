@@ -6,7 +6,17 @@ typedef struct {
 Point point_c(int x, int y);
 
 typedef struct {
-	Point* points;
+	int r;
+	int g;
+	int b;
+	int a;
+} Color;
+
+typedef struct {
+	Point points[3];
+	Color color;
 } Triangle;
 
-Triangle triangle_c(int x1, int y1, int x2, int y2, int x3, int y3);
+Triangle triangle_c(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
+Color color_c(int r, int g, int b, int a);
+

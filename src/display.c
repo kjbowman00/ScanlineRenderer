@@ -5,9 +5,9 @@
 #define WIDTH 500
 #define HEIGHT 500
 
-int* pixels;
+Color* pixels;
 
-void generateImage(int* pixels, int width, int height);
+void generateImage(Color* pixels, int width, int height);
   
 // function to initialize 
 void myInit (void) 
@@ -29,18 +29,20 @@ void display (void)
     glColor3f(1,0,0);
     for (y = 0; y < HEIGHT; y++) {
 		for (x = 0; x < WIDTH; x++) {
-			if (pixels[x + WIDTH*y] == 1) {
-				glVertex2i(x-WIDTH/2,y-HEIGHT/2);
-			}
+			//if (pixels[x + WIDTH*y] == 1) {
+			Color c = pixels[x + WIDTH*y];
+			glColor4f(c.r, c.g, c.b, c.a);
+			glVertex2i(x-WIDTH/2,y-HEIGHT/2);
+			//}
 		}
 	}
     
     
     //Draw 3 test points
     glColor3f(0,1,0);
-    glVertex2i(10,10);
-    glVertex2i(-50,-50);
-    glVertex2i(50,-80);
+    glVertex2i(17,-128);
+    glVertex2i(0, 0);
+    glVertex2i(-250,250);
     
     glColor3f(0,0,1);
     glVertex2i(0,0);
@@ -53,7 +55,7 @@ void display (void)
 int main (int argc, char** argv) 
 { 
 	//GENERATE IMAGE
-	pixels = (int*) calloc(WIDTH*HEIGHT, sizeof(int));
+	pixels = (Color*) calloc(WIDTH*HEIGHT, sizeof(Color));
 	if (pixels == NULL) {
 		printf("pixels array not allocated\n");
 		return 0;
