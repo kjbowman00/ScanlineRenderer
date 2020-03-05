@@ -92,6 +92,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 							}
 						}
 					}	
+				} else if (numIntersections == 3) {
 				}
 			}
 		}

@@ -32,18 +32,12 @@ void display (void)
 		for (x = 0; x < WIDTH; x++) {
 			//if (pixels[x + WIDTH*y] == 1) {
 			Color c = pixels[x + WIDTH*y];
-			glColor4f(c.r, c.g, c.b, c.a);
+			glColor4f( ((float)c.r)/255.0, ((float)c.g)/255.0, ((float)c.b)/255.0, ((float)c.a)/255.0);
 			glVertex2i(x-WIDTH/2,y-HEIGHT/2);
 			//}
 		}
 	}
     
-    
-    //Draw 3 test points
-    glColor3f(0,1,0);
-    glVertex2i(17,-128);
-    glVertex2i(0, 0);
-    glVertex2i(-250,250);
     
     glColor3f(0,0,1);
     glVertex2i(0,0);
