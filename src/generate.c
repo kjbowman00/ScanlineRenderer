@@ -76,6 +76,12 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						int x;
 						int low = (int) xIntercepts[0];
 						int high = (int) xIntercepts[1];
+						
+						//Generate pixels from texture
+						int dL = high-low+1;
+						Color cArray[dL];
+						//map(
+						
 						for (x= low; x <= high; x++) {
 							if ( x >= 0 && x < w) {
 								pixels[x + y*w] = triangle.color;
