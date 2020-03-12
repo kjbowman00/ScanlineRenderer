@@ -26,11 +26,5 @@ typedef struct {
 	Color* colors;
 } Texture;
 
-Texture texture_c(int w, int h) {
-	Texture t;
-	t.w = w;
-	t.h = h;
-	t.colors = calloc(w * h, sizeof(Color));
-	return t;
-}
+Texture texture_c(int w, int h);
 

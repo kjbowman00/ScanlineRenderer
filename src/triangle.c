@@ -24,3 +24,11 @@ Color color_c(int r, int g, int b, int a) {
 	c.a = a;
 	return c;
 }
+
+Texture texture_c(int w, int h) {
+	Texture t;
+	t.w = w;
+	t.h = h;
+	t.colors = calloc(w * h, sizeof(Color));
+	return t;
+}

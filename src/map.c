@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <structs.h>
 #include <math.h>
+
+#include "structs.h"
 
 /**
  * Maps an array of colors to another array. Will scale up
@@ -41,8 +42,18 @@ Texture textureMap(Texture source, int nW, int nH) {
 	Texture heightScaled = texture_c(source.w, nH);
 	
 	int i;
+	//Loop through the columns
 	for (i = 0; i < nW; i++) {
-		//texture_c[
+		//Grab the old column
+		Color oldCol[source.h];
+		grabColumn(source, oldCol, i);
+		
+		//Map it to the new column height
+		Color newCol[nH];
+		map(source.h, nH, oldCol, newCol);
+		
+		//Insert it into the texture
+		fillColumn(newCol, heightScaled, i);
 	}
 	return heightScaled;
 }
