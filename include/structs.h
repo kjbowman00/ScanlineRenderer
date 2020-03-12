@@ -1,3 +1,4 @@
+#include <stdlib.h>
 typedef struct {
   int x;
   int y;
@@ -19,4 +20,17 @@ typedef struct {
 
 Triangle triangle_c(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
 Color color_c(int r, int g, int b, int a);
+
+typedef struct {
+	int w, h;
+	Color* colors;
+} Texture;
+
+Texture texture_c(int w, int h) {
+	Texture t;
+	t.w = w;
+	t.h = h;
+	t.colors = calloc(w * h, sizeof(Color));
+	return t;
+}
 

@@ -17,3 +17,32 @@ void map(int sL, int dL, Color* source, Color* destination) {
 		destination[i] = source[j];
 	}
 }
+
+void grabColumn(Texture source, Color* dest, int colN) {
+	int i;
+	int len = source.h;
+	for (i = 0; i < len; i++) {
+		dest[i] = source.colors[len*i + colN];
+	}
+}
+
+void fillColumn(Color* source, Texture dest, int colN) {
+	int i;
+	int len = dest.h;
+	for (i = 0; i < len; i++) {
+		dest.colors[len*i + colN] = source[i];
+	}
+}
+
+/**
+ * maps a texture to a new desired width and height
+ **/
+Texture textureMap(Texture source, int nW, int nH) {
+	Texture heightScaled = texture_c(source.w, nH);
+	
+	int i;
+	for (i = 0; i < nW; i++) {
+		//texture_c[
+	}
+	return heightScaled;
+}
