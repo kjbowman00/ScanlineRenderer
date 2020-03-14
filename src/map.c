@@ -35,6 +35,9 @@ void fillColumn(Color* source, Texture dest, int colN) {
 	}
 }
 
+void fillRow(Color* source, Texture dest, int rowN) {
+}
+
 /**
  * maps a texture to a new desired width and height
  **/
@@ -60,15 +63,14 @@ Texture textureMap(Texture source, int nW, int nH) {
 	
 	for (i = 0; i < nH; i++) {
 		//Grab the old row
-		Color oldRow[source.w];
-		*oldRow = heightScaled.colors[i*nW];
+		Color* oldRow = heightScaled.colors + i*nW;
 		
 		//Map it to the new row
 		Color newRow[nW];
 		map(source.w, nW, oldRow, newRow);
 		
 		//insert it into the texture
-		allScaled.colors[i*nW] = *newRow;
+		fillRow(newRow, allScaled, i);
 	}
 	//Deallocate
 	texture_d(heightScaled);

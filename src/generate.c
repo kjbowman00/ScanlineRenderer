@@ -82,6 +82,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 			triWH(triangle, &tW, &tH);
 			Texture mapT = textureMap(myTexture, tW, tH);
 			
+			int intersectCount = 0;
 			if (lineIntersectsTriangle(y, triangle)) {
 				//Determine intersection points:
 				int numIntersections = 0;
@@ -112,7 +113,8 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						//Generate pixels from texture
 						int dL = high-low+1;
 						Color cArray[dL];
-						map(mapT.w, dL, mapT.colors + y*mapT.w, cArray);
+						int temp1 = mapT.w;
+						map(mapT.w, dL, mapT.colors + intersectCount*mapT.w, cArray);
 						
 						int count = 0;
 						for (x= low; x <= high; x++) {
@@ -142,7 +144,9 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 					}	
 				} else if (numIntersections == 3) {
 				}
+				intersectCount++;
 			}
+			texture_d(mapT);
 		}
 	}
 }
