@@ -27,4 +27,5 @@ typedef struct {
 } Texture;
 
 Texture texture_c(int w, int h);
+void texture_d(Texture t);
 

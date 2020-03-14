@@ -32,3 +32,7 @@ Texture texture_c(int w, int h) {
 	t.colors = calloc(w * h, sizeof(Color));
 	return t;
 }
+
+void texture_d(Texture t) {
+	free(t.colors);
+}

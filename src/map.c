@@ -55,5 +55,23 @@ Texture textureMap(Texture source, int nW, int nH) {
 		//Insert it into the texture
 		fillColumn(newCol, heightScaled, i);
 	}
-	return heightScaled;
+	
+	Texture allScaled = texture_c(nW, nH);
+	
+	for (i = 0; i < nH; i++) {
+		//Grab the old row
+		Color oldRow[source.w];
+		*oldRow = heightScaled.colors[i*nW];
+		
+		//Map it to the new row
+		Color newRow[nW];
+		map(source.w, nW, oldRow, newRow);
+		
+		//insert it into the texture
+		allScaled.colors[i*nW] = *newRow;
+	}
+	//Deallocate
+	texture_d(heightScaled);
+	
+	return allScaled;
 }
