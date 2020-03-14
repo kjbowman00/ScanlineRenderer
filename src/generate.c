@@ -4,6 +4,8 @@
 
 #include "structs.h"
 
+Texture readTexture(char* fileName);
+
 float calcSlope(Triangle tri, int i1, int i2) {
 	return ((float)(tri.points[i1].y - tri.points[i2].y)) / 
 	((float) (tri.points[i1].x - tri.points[i2].x));
@@ -40,6 +42,8 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 	//Color c = color_c(255, 0, 0, 255);
 	//Triangle triangle = triangle_c(-300+w/2,300+h/2, 300+w/2,300+h/2, 70+w/2, -100+h/2, c);
 	//Triangle triangle = triangles[0];
+	
+	Texture myTexture = readTexture("testTexture.txt");
 	
 	printf("W: %d, H: %d\n", w, h);
 	
