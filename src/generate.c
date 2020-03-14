@@ -5,6 +5,8 @@
 #include "structs.h"
 
 Texture readTexture(char* fileName);
+void map(int sL, int dL, Color* source, Color* destination);
+Texture textureMap(Texture source, int nW, int nH);
 
 float calcSlope(Triangle tri, int i1, int i2) {
 	return ((float)(tri.points[i1].y - tri.points[i2].y)) / 
@@ -35,6 +37,27 @@ bool lineIntersectsTriangle(int y, Triangle tri) {
 }
 
 /**
+ * Calculates triangles width and height
+ **/
+void triWH(Triangle tri, int* w, int* h) {
+	int h1 = abs(tri.points[0].y - tri.points[1].y);
+	int h2 = abs(tri.points[0].y - tri.points[2].y);
+	int h3 = abs(tri.points[1].y - tri.points[2].y);
+	int bigH = h1;
+	if (h2 > bigH) bigH = h2;
+	if (h3 > bigH) bigH = h3;
+	
+	int w1 = abs(tri.points[0].x - tri.points[1].x);
+	int w2 = abs(tri.points[0].x - tri.points[2].x);
+	int w3 = abs(tri.points[1].x - tri.points[2].x);
+	int bigW = w1;
+	if (w2 > bigW) bigW = w2;
+	if (w3 > bigW) bigW = w3;
+	*w = bigW;
+	*h = bigH;
+}
+
+/**
  * Fills a pixel array based on triangles position
  */
 void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
@@ -54,6 +77,11 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 		//TODO: Add array of triangles
 		for (int triN = 0; triN < N; triN++) {
 			Triangle triangle = triangles[triN];
+			//Map myTexture to the size of the triangle
+			int tW, tH;
+			triWH(triangle, &tW, &tH);
+			Texture mapT = textureMap(myTexture, tW, tH);
+			
 			if (lineIntersectsTriangle(y, triangle)) {
 				//Determine intersection points:
 				int numIntersections = 0;
@@ -84,11 +112,13 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						//Generate pixels from texture
 						int dL = high-low+1;
 						Color cArray[dL];
-						//map(
+						map(mapT.w, dL, mapT.colors + y*mapT.w, cArray);
 						
+						int count = 0;
 						for (x= low; x <= high; x++) {
 							if ( x >= 0 && x < w) {
-								pixels[x + y*w] = triangle.color;
+								pixels[x + y*w] = cArray[count];
+								count++;
 							}
 						}
 					}
@@ -96,9 +126,17 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						int x;
 						int low = (int) xIntercepts[1];
 						int high = (int) xIntercepts[0];
+						
+						//Generate pixels from texture
+						int dL = high-low+1;
+						Color cArray[dL];
+						map(mapT.w, dL, mapT.colors + y*mapT.w, cArray);
+						
+						int count = 0;
 						for (x=low; x < high; x++) {
 							if ( x >= 0 && x < w) {
-								pixels[x + y*w] = triangle.color;
+								pixels[x + y*w] = cArray[count];
+								count++;
 							}
 						}
 					}	

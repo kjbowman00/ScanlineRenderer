@@ -14,7 +14,7 @@ void map(int sL, int dL, Color* source, Color* destination) {
 	
 	int i;
 	for (i = 0; i < dL; i++) {
-		int j = round(m * ((float) i) + ((float) sL));
+		int j = round(m * ((float) i) + ((float) sL) - 1.0);
 		destination[i] = source[j];
 	}
 }
@@ -23,7 +23,7 @@ void grabColumn(Texture source, Color* dest, int colN) {
 	int i;
 	int len = source.h;
 	for (i = 0; i < len; i++) {
-		dest[i] = source.colors[len*i + colN];
+		dest[i] = source.colors[source.w*i + colN];
 	}
 }
 
@@ -31,7 +31,7 @@ void fillColumn(Color* source, Texture dest, int colN) {
 	int i;
 	int len = dest.h;
 	for (i = 0; i < len; i++) {
-		dest.colors[len*i + colN] = source[i];
+		dest.colors[dest.w*i + colN] = source[i];
 	}
 }
 
@@ -43,7 +43,7 @@ Texture textureMap(Texture source, int nW, int nH) {
 	
 	int i;
 	//Loop through the columns
-	for (i = 0; i < nW; i++) {
+	for (i = 0; i < source.w; i++) {
 		//Grab the old column
 		Color oldCol[source.h];
 		grabColumn(source, oldCol, i);
