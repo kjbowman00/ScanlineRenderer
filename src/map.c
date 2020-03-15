@@ -35,6 +35,10 @@ void fillColumn(Color* source, Texture dest, int colN) {
 }
 
 void fillRow(Color* source, Texture dest, int rowN) {
+	int i;
+	for (i = 0; i < dest.w; i++) {
+		dest.colors[rowN*dest.w + i] = source[i];
+	}
 }
 
 /**
