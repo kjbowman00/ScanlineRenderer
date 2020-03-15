@@ -10,11 +10,10 @@
  * sL is length of source and dL is length of destination color array
  **/
 void map(int sL, int dL, Color* source, Color* destination) {
-	float m = -1 * ((float) sL) / ((float) dL);
-	
+	float m = ((float) sL) / ((float) dL);
 	int i;
 	for (i = 0; i < dL; i++) {
-		int j = round(m * ((float) i) + ((float) sL) - 1.0);
+		int j = (int) (m * ((float) i));
 		destination[i] = source[j];
 	}
 }
@@ -63,7 +62,7 @@ Texture textureMap(Texture source, int nW, int nH) {
 	
 	for (i = 0; i < nH; i++) {
 		//Grab the old row
-		Color* oldRow = heightScaled.colors + i*nW;
+		Color* oldRow = heightScaled.colors + i*heightScaled.w;
 		
 		//Map it to the new row
 		Color newRow[nW];

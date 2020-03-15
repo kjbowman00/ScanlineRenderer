@@ -132,7 +132,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						//Generate pixels from texture
 						int dL = high-low+1;
 						Color cArray[dL];
-						map(mapT.w, dL, mapT.colors + y*mapT.w, cArray);
+						map(mapT.w, dL, mapT.colors + intersectCount*mapT.w, cArray);
 						
 						int count = 0;
 						for (x=low; x < high; x++) {
