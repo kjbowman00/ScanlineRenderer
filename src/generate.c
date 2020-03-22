@@ -72,6 +72,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 	
 	//printf("Triangle: %d,%d\n%d,%d\n%d,%d\n",triangle.points[0].x,triangle.points[0].y,triangle.points[1].x,triangle.points[1].y,triangle.points[2].x,triangle.points[2].y);
 	
+	int* triangleIntersectionCounter = (int*) calloc(N, sizeof(int));
 	for (int y = 0; y < h; y++) {
 		//loop through all triangles
 		//TODO: Add array of triangles
@@ -82,7 +83,6 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 			triWH(triangle, &tW, &tH);
 			Texture mapT = textureMap(myTexture, tW, tH);
 			
-			int intersectCount = 0;
 			if (lineIntersectsTriangle(y, triangle)) {
 				//Determine intersection points:
 				int numIntersections = 0;
@@ -114,7 +114,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						int dL = high-low+1;
 						Color cArray[dL];
 						int temp1 = mapT.w;
-						map(mapT.w, dL, mapT.colors + intersectCount*mapT.w, cArray);
+						map(mapT.w, dL, mapT.colors + triangleIntersectionCounter[triN]*mapT.w, cArray);
 						
 						int count = 0;
 						for (x= low; x <= high; x++) {
@@ -132,7 +132,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 						//Generate pixels from texture
 						int dL = high-low+1;
 						Color cArray[dL];
-						map(mapT.w, dL, mapT.colors + intersectCount*mapT.w, cArray);
+						map(mapT.w, dL, mapT.colors + triangleIntersectionCounter[triN]*mapT.w, cArray);
 						
 						int count = 0;
 						for (x=low; x < high; x++) {
@@ -144,7 +144,7 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 					}	
 				} else if (numIntersections == 3) {
 				}
-				intersectCount++;
+				triangleIntersectionCounter[triN] += 1;
 			}
 			texture_d(mapT);
 		}
