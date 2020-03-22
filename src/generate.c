@@ -61,17 +61,9 @@ void triWH(Triangle tri, int* w, int* h) {
  * Fills a pixel array based on triangles position
  */
 void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
-	
-	//Color c = color_c(255, 0, 0, 255);
-	//Triangle triangle = triangle_c(-300+w/2,300+h/2, 300+w/2,300+h/2, 70+w/2, -100+h/2, c);
-	//Triangle triangle = triangles[0];
-	
 	Texture myTexture = readTexture("testTexture.txt");
 	
-	printf("W: %d, H: %d\n", w, h);
-	
-	//printf("Triangle: %d,%d\n%d,%d\n%d,%d\n",triangle.points[0].x,triangle.points[0].y,triangle.points[1].x,triangle.points[1].y,triangle.points[2].x,triangle.points[2].y);
-	
+	//Used to track where in each texture the triangle is at
 	int* triangleIntersectionCounter = (int*) calloc(N, sizeof(int));
 	for (int y = 0; y < h; y++) {
 		//loop through all triangles
@@ -103,46 +95,47 @@ void generateImage(Color* pixels, int w, int h, int N, Triangle* triangles) {
 					numIntersections++;
 				}
 				
-				if(numIntersections == 2) {
-					//Fill inbetween the two points
-					if (xIntercepts[0] < xIntercepts[1]) {
-						int x;
-						int low = (int) xIntercepts[0];
-						int high = (int) xIntercepts[1];
-						
-						//Generate pixels from texture
-						int dL = high-low+1;
-						Color cArray[dL];
-						int temp1 = mapT.w;
-						map(mapT.w, dL, mapT.colors + triangleIntersectionCounter[triN]*mapT.w, cArray);
-						
-						int count = 0;
-						for (x= low; x <= high; x++) {
-							if ( x >= 0 && x < w) {
-								pixels[x + y*w] = cArray[count];
-								count++;
-							}
+				//Determine left intersection and right intersection
+				if (numIntersections == 2) {
+					if (xIntercepts[0] > xIntercepts[1]) {
+						int temp = xIntercepts[0];
+						xIntercepts[0] = xIntercepts[1];
+						xIntercepts[1] = temp;
+					}
+				}
+				else if (numIntersections == 3) {
+					int max = xIntercepts[0];
+					int min = xIntercepts[0];
+					for (int i = 1; i < 3; i++) {
+						if (xIntercepts[i] > max) {
+							max = xIntercepts[i];
+						}
+						if (xIntercepts[i] < min) {
+							min = xIntercepts[i];
 						}
 					}
-					else {
-						int x;
-						int low = (int) xIntercepts[1];
-						int high = (int) xIntercepts[0];
-						
-						//Generate pixels from texture
-						int dL = high-low+1;
-						Color cArray[dL];
-						map(mapT.w, dL, mapT.colors + triangleIntersectionCounter[triN]*mapT.w, cArray);
-						
-						int count = 0;
-						for (x=low; x < high; x++) {
-							if ( x >= 0 && x < w) {
-								pixels[x + y*w] = cArray[count];
-								count++;
-							}
+					xIntercepts[0] = min;
+					xIntercepts[1] = max;
+				}
+				
+				//Fill inbetween the two points
+				if (numIntersections >= 2) {
+					int x;
+					int low = (int) xIntercepts[0];
+					int high = (int) xIntercepts[1];
+					
+					//Generate pixels from texture
+					int dL = high-low+1;
+					Color cArray[dL];
+					map(mapT.w, dL, mapT.colors + triangleIntersectionCounter[triN]*mapT.w, cArray);
+					
+					int count = 0;
+					for (x= low; x <= high; x++) {
+						if ( x >= 0 && x < w) {
+							pixels[x + y*w] = cArray[count];
+							count++;
 						}
-					}	
-				} else if (numIntersections == 3) {
+					}
 				}
 				triangleIntersectionCounter[triN] += 1;
 			}
